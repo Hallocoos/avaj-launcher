@@ -2,12 +2,15 @@ package src.simulator;
 
 import src.weather.*;
 
-public class WeatherTower {
+public class WeatherTower extends Tower {
   public void changeWeather() {
-    System.out.println("Hello World!");
+    // System.out.println("changeWeather works");
   }
 
   public String getWeather(Coordinates coordinates) {
-    return "function call works";
+    // call to weatherprovider
+    // calculate movements
+    // return weather;
+    return "weather";
   }
 }

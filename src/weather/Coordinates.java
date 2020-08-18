@@ -25,4 +25,8 @@ public class Coordinates {
   public int getHeight() {
     return this.height;
   }
+
+  public String toString() {
+    return String.valueOf(this.longitude) + "\t" + String.valueOf(this.latitude) + "\t" + String.valueOf(this.height);
+  }
 }

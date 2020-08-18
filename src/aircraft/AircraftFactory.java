@@ -3,7 +3,7 @@ package src.aircraft;
 import src.weather.*;
 import src.simulator.interfaces.Flyable;
 
-public class AircraftFactory {
+public abstract class AircraftFactory {
   public static Flyable newAircraft(String type, String name, int longitude, int latitude, int height) {
     Coordinates coordinates = new Coordinates(longitude, latitude, height);
     Flyable newAircraft;

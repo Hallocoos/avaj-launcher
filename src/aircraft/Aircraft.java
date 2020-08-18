@@ -1,8 +1,8 @@
 package src.aircraft;
 
-import src.weather.*;
+import src.weather.Coordinates;
 
-public class Aircraft {
+public abstract class Aircraft {
   protected long id;
   protected String name;
   protected Coordinates coordinates;
@@ -17,5 +17,9 @@ public class Aircraft {
 
   private long nextId() {
     return (++idCounter);
+  }
+
+  public String toString() {
+    return this.id + "\t" + this.name + "\t" + this.coordinates;
   }
 }
