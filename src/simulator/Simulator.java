@@ -2,50 +2,58 @@ package src.simulator;
 
 import java.io.*;
 import java.util.*;
+import java.lang.NumberFormatException;
+
+import src.aircraft.*;
 import src.simulator.interfaces.Flyable;
-// import src.aircraft.*;
 
-public class Simulator {
-  // private static WeatherTower weatherTower;
-  private static List<Flyable> flyables = new ArrayList<Flyable>();
+class Simulator {
+	private static WeatherTower weatherTower = new WeatherTower();
+	private static List<Flyable> flyables = new ArrayList<Flyable>();
 
-  public static void main(String[] arg) throws InterruptedException {
-    try {
-      BufferedReader reader = new BufferedReader(new FileReader(arg[0]));
-      String line = reader.readLine();
-      if (line != null) {
-        // System.out.println(line);
-        // weatherTower = new WeatherTower();
-        int simulations = Integer.parseInt(line.split(" ")[0]);
-        if (simulations < 1) {
-          System.out.println("Invalid simulations count " + simulations);
-          System.exit(1);
-        }
-        while ((line = reader.readLine()) != null) {
-          Flyable flyable = AircraftFactory.newAircraft(line.split(" ")[0], line.split(" ")[1],
-              Integer.parseInt(line.split(" ")[2]), Integer.parseInt(line.split(" ")[3]),
-              Integer.parseInt(line.split(" ")[4]));
-          flyables.add(flyable);
-          System.out.println(flyable);
-        }
-        for (Flyable flyable : flyables) {
-          flyable.registerTower(weatherTower);
-        }
-        // for (int i = 1; i <= simulations; i++) {
-        //   weatherTower.changeWeather();
-        // }
-      }
-      reader.close();
-    //   read to file
-    // } catch (FileNotFoundExeption e) {
-    //   System.out.println("Couldn\'t find file " + arg[0]);
-    } catch (IOException e) {
-      System.out.println("There was an error reading the file " + arg[0]);
-    } catch (ArrayIndexOutOfBoundsException e) {
-      System.out.println("Specify Simulation file");
-    }
-    //   finally {
-    //   Logger.getLogger().close();
-    // }
-  }
+	public static void main(String[] arg) throws InterruptedException {
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(arg[0]));
+			String line = reader.readLine();
+			if (line != null) {
+				try {
+					int simulations = Integer.parseInt(line.split(" ")[0]);
+					if (simulations < 1) {
+						System.out.println("Invalid simulations count " + simulations);
+						System.exit(1);
+					}
+					while ((line = reader.readLine()) != null) {
+						String type = line.split(" ")[0];
+						String name = line.split(" ")[1];
+						int longitude = Integer.parseInt(line.split(" ")[2]);
+						int latitude = Integer.parseInt(line.split(" ")[3]);
+						int height = Integer.parseInt(line.split(" ")[4]);
+						if (name.length() > 0 && (type.equals("JetPlane") || type.equals("Helicopter") || type.equals("Baloon"))) {
+							Flyable flyable = AircraftFactory.newAircraft(type, name, longitude, latitude, height);
+							flyables.add(flyable);
+						} else {
+							System.out.println("Specify Simulation file");
+							System.exit(0);
+						}
+					}
+					for (Flyable flyable : flyables) {
+						flyable.registerTower(weatherTower);
+					}
+					for (int i = 1; i <= simulations; i++) {
+						weatherTower.changeWeather();
+					}
+				} catch (NumberFormatException e) {
+					System.out.println("There was an error reading the file " + arg[0]);
+				}
+				reader.close();
+			} else
+				System.out.println("File is empty: " + arg[0]);
+		} catch (IOException e) {
+			System.out.println("There was an error reading the file " + arg[0]);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("Specify Simulation file");
+		} finally {
+			Logger.closeWriter();
+		}
+	}
 }

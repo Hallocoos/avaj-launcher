@@ -3,14 +3,11 @@ package src.simulator;
 import src.weather.*;
 
 public class WeatherTower extends Tower {
-  public void changeWeather() {
-    // System.out.println("changeWeather works");
-  }
+	public void changeWeather() {
+		this.conditionsChanged();
+	}
 
-  public String getWeather(Coordinates coordinates) {
-    // call to weatherprovider
-    // calculate movements
-    // return weather;
-    return "weather";
-  }
+	public String getWeather(Coordinates coordinates) {
+		return (WeatherProvider.getProvider().getCurrentWeather(coordinates));
+	}
 }

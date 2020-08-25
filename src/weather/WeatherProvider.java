@@ -3,20 +3,19 @@ package src.weather;
 import java.util.*;
 
 public class WeatherProvider {
-  WeatherProvider weatherProvider;
-  String[] weather = {"Rain", "Fog", "Sun", "Snow"};
-  String currWeather;
+  private static WeatherProvider weatherProvider = null;
+  private String[] weather = { "Rain", "Fog", "Sun", "Snow" };
 
   private WeatherProvider() {
-    int randomNumber = new Random().nextInt(weather.length);
-    this.currWeather = this.weather[randomNumber];
   }
 
-  public void getProvider() {
-
+  public static WeatherProvider getProvider() {
+    if (weatherProvider == null)
+      weatherProvider = new WeatherProvider();
+    return weatherProvider;
   }
 
   public String getCurrentWeather(Coordinates coordinates) {
-    return "asdf";
+    return this.weather[new Random().nextInt(weather.length)];
   }
 }
